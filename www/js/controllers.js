@@ -12,7 +12,7 @@ angular.module('starter.controllers', [])
 .controller('AppCtrl', function($scope, $state, $ionicHistory) {
 
     $scope.logOut = function(){
-        
+
        $ionicHistory.clearCache().then(function() {
            $ionicHistory.clearHistory();
            $ionicHistory.nextViewOptions({ disableBack: true, historyRoot: true });
@@ -20,20 +20,20 @@ angular.module('starter.controllers', [])
            $state.go('login');
        })
     }
-    
+
 })
 
 .controller('SondaggiCtrl', function($rootScope, $http) {
-    
+
     $http.get('https://progettois.herokuapp.com/api/surveys')
         .success(function(data){
             $rootScope.sondaggi= data;
-            
+
             var surveyIDS = [];
             angular.forEach($rootScope.sondaggi, function(value,key){
                 surveyIDS.push(value.id);
             })
-            
+
             $rootScope.sondaggiShow = []
             $rootScope.sondaggiRisposti = []
             for(let id in surveyIDS){
@@ -56,18 +56,18 @@ angular.module('starter.controllers', [])
                     alert("Errore nel check delle risposte")
                 });
             }
-        
-        
+
+
     })
         .error(function(data){
         alert("Errore nel caricamento dei sondaggi")
     });
-    
-    
-    
-    
+
+
+
+
     $rootScope.getSondaggioID = function(id){
-        
+
         $http.get('https://progettois.herokuapp.com/api/surveys/' + id + '.json')
             .success(function(data){ì
                 $rootScope.sondaggio = data
@@ -75,11 +75,11 @@ angular.module('starter.controllers', [])
             .error(function(data){
                 console.log("Errore get sondaggio")
             })
-        
+
         $http.get('https://progettois.herokuapp.com/api/surveys/' + id + '/questions.json')
         .success(function(data){
             $rootScope.domande= data;
-            
+
             $rootScope.multiple = [];
             $rootScope.aperte = [];
             angular.forEach($rootScope.domande, function(value, key){
@@ -89,49 +89,96 @@ angular.module('starter.controllers', [])
                     $rootScope.multiple.push(value);
                 }
             })
-            
-            
-            
+
+
+
         })
         .error(function(data){
             alert("Errore nel caricamento del sondaggio")
         });
     }
-    
-    
+
+    ///INiziare da qui
+
     $rootScope.getSondaggioInfo = function(id){
-        $rootScope.domandeRiepilogo = [];
-        $rootScope.risposteRiepilogo = [];
-        
+        var domandeRiepilogo = new Map() ;
+        var risposteRiepilogo = {};
+
         $http.get('https://progettois.herokuapp.com/api/users/' + $rootScope.account.id + '/answers/' + id)
         .success(function(data){
-            console.log(data)
-            $rootScope.risposteRiepilogo.push(data.data.risposte);
-            $http.get('https://progettois.herokuapp.com/api/surves/' + data.survey_question_id + '/questions.json')
-            .success(function(data1){
-                angular.forEach(data1, function(value, key){
-                    $rootScope.domandeRiepilogo.push(value.data.question);
-                })
+            if(data != undefined){
+              console.log(data)
+              angular.forEach(data, function(value, key){
+                  risposteRiepilogo[value.survey_question_id] = value.data.riposte
+                  //console.log("question in " + value.survey_question_id);
+                  //console.log("array risposte " + value.data.riposte);
+              })
+              //risposteRiepilogo[data.survey_question_id] = data.data.riposte
+
+            }
+        })
+
+        /*
+        $http.get('https://progettois.herokuapp.com/api/surveys/' + data.survey_question_id + '/questions.json')
+        .success(function(data1){
+            angular.forEach(data1, function(value, key){
+                domandeRiepilogo[value.id]= value.data.question;
             })
         })
+        */
+        console.log("Stampo risposte riepilogo")
+        console.log(risposteRiepilogo)
+
+        $http.get('https://progettois.herokuapp.com/api/surveys/' + id + '/questions.json')
+            .success(function(data1){
+                angular.forEach(data1, function(value, key){
+                  domandeRiepilogo.set(value.id, value.data.question);
+                   //console.log("value id " + value.id);
+                   //console.log("data question " + value.data.question);
+                })
+        })
+        $rootScope.hashArrayDomandeRisposte = {"First Name": ["John", "chhh"], "Last Name":"Smith", "First Name33":"John", "Last Name44":"Smith"}
+        for(var i in domandeRiepilogo){
+          console.log(i)
+          if(risposteRiepilogo[i] != undefined){
+            $rootScope.hashArrayDomandeRisposte[domandeRiepilogo[i]] = risposteRiepilogo[i];
+          } else {
+            $rootScope.hashArrayDomandeRisposte[domandeRiepilogo[i]] = "";
+          }
+        }
+        for(var i in domandeRiepilogo){
+          console.log("hajshajshdjahsd");
+          console.log(i);
+        }
+
+        angular.forEach(domandeRiepilogo, function(value, key){
+          console.log("provissima");
+          console.log(value + " " + key);
+        })
+
+        console.log("Stampo domande riepilogo")
+        console.log(domandeRiepilogo)
+
+        console.log("Stampo hashmapProva")
+        console.log($rootScope.hashArrayDomandeRisposte);
+
     }
-    
 })
 
 .controller('SondaggioCtrl', function($rootScope, $http, $state, $ionicPopup, $timeout) {
-    
+
     $rootScope.datiRisposte = [];
-    
-     $rootScope.addRisposta = function(risposta, domanda){    
-        
+
+     $rootScope.addRisposta = function(risposta, domanda){
+
         if($rootScope.datiRisposte[domanda.id] == undefined){
             $rootScope.datiRisposte[domanda.id] = []
         }
         $rootScope.datiRisposte[domanda.id].push(risposta)
     }
-    
-    
-    
+
+
+
     //NON FUNZIONA
     $rootScope.shouldDisable = function(domanda) {
         if(!$rootScope.datiRisposte[domanda.id]) {
@@ -142,19 +189,19 @@ angular.module('starter.controllers', [])
                 }
             console.log(count)
             });
-            
+
             if(count >= domanda.data.type.max_answer) {
                 return true;
             }
         }
-        
+
         return false;
     };
-    
-    
-    
+
+
+
     $rootScope.clickSubmit = function(){
-        
+
         var arrayprova = []
         for(let i in $rootScope.datiRisposte) {
             var dato = {"user_id": $rootScope.account.id};
@@ -162,7 +209,7 @@ angular.module('starter.controllers', [])
             dato.data = {"riposte": $rootScope.datiRisposte[i]}
             arrayprova.push(dato);
         }
-        
+
         for(let d in arrayprova){
             $http.post('http://progettois.herokuapp.com/api/survey_answers.json', arrayprova[d])
             .success(function(data, status, headers, config){
@@ -176,7 +223,7 @@ angular.module('starter.controllers', [])
                 console.log(status)
             })
         }
-        
+
         var alertPopup = $ionicPopup.alert({
           title: 'Okay',
           template: 'Grazie per aver completato il nostro sondaggio'
@@ -184,18 +231,18 @@ angular.module('starter.controllers', [])
         alertPopup.then(function(res) {
           $state.go('app.sondaggi');
         });
-        
+
     }
-    
+
 })
 
 .controller('AccountCtrl', function($state, $scope, $rootScope, $ionicPopup, $http) {
-    
-    
+
+
     $scope.modifica=function($stringa){
-        
+
       $scope.data = {}
-        
+
         //controllo campo da modificare
         switch($stringa){
             case 'e':
@@ -208,7 +255,7 @@ angular.module('starter.controllers', [])
     if($campo != "Password"){
       var myPopup = $ionicPopup.show({
          template: '<input type ="text" ng-model = "data.model">',
-          
+
          scope: $scope,
          title: $campo,
          buttons: [
@@ -224,7 +271,7 @@ angular.module('starter.controllers', [])
               }
            }
         ],
-      }); 
+      });
       myPopup.then(function(res) {
         //ok ricontrolla però
          $http.post('https://progettois.herokuapp.com/api/users/' +$rootScope.account.id + '?' + $campo.toLowerCase() + '=' + res)
@@ -235,11 +282,11 @@ angular.module('starter.controllers', [])
             .error(function(data){
                 alert("Errore post");
             })
-        })  
+        })
     }else{
       var pwPopup = $ionicPopup.show({
          template: '<input type ="password" ng-model = "data.model">',
-          
+
          scope: $scope,
          title: $campo,
          buttons: [
@@ -255,9 +302,9 @@ angular.module('starter.controllers', [])
               }
            }
         ],
-      }); 
+      });
       pwPopup.then(function(res) {
-                
+
                 //ok ricontrolla però
                  $http.post('https://progettois.herokuapp.com/api/users/' +$rootScope.account.id + '?password=' + res)
                     .success(function(data){
@@ -267,20 +314,20 @@ angular.module('starter.controllers', [])
                     .error(function(data){
                         alert("Errore post");
                     })
-        })  
+        })
     };
   }
-    
+
 })
 
 .controller('RegisterCtrl', function($scope, $state, $http, $ionicPopup) {
     $scope.registerData = {};
-    
+
     $scope.register = function(){
         $scope.registerData.role= 'user';
         console.log($scope.registerData)
         if($scope.registerData.email && $scope.registerData.password){
-            
+
             //TODO gestire errore 500 (tenere e passarci sopra)
             $http.post('https://progettois.herokuapp.com/api/new_user.json', $scope.registerData)
              .success(function(data) {
@@ -305,7 +352,7 @@ angular.module('starter.controllers', [])
               });
         }
     };
-    
+
     $scope.backToLogin = function(){
         $state.go('login');
     };
@@ -315,7 +362,7 @@ angular.module('starter.controllers', [])
 .controller('LoginCtrl', function($scope, $state, $http, $rootScope, $ionicPopup) {
     $scope.loginData = {};
     $rootScope.account= {};
-    
+
     $scope.doLogin = function() {
      $credenziali = {
          email: $scope.loginData.email,
@@ -337,10 +384,10 @@ angular.module('starter.controllers', [])
           }
         })
           .error(function(data) {
-            
-        }); 
+
+        });
   }
-    
+
     $scope.doRegistrazione= function(){
         $state.go('register');
     }
