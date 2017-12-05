@@ -1,0 +1,26 @@
+<ion-view view-title="Login">
+  <ion-header-bar>
+    <h1 class="title">Login</h1>
+  </ion-header-bar>
+  <ion-content>
+    <img class="logo" src="../img/survey_app_logo.png">
+    <form ng-submit="doLogin()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Username</span>
+          <input type="email" ng-model="loginData.email">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Password</span>
+          <input type="password" ng-model="loginData.password">
+        </label>
+        <div class="divBottone" style="padding-bottom: 0px;">
+          <button class="button bottone button-block button-positive" type="submit">Log in</button>
+        </div>
+      </div>
+    </form>
+    <div class="divBottone" style="padding-top: 0px;">
+      <button class="button bottone button-block button-positive" ng-click="doRegistrazione()">Registrati</button>
+    </div>
+  </ion-content>
+</ion-view>

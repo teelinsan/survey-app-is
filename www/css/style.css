@@ -1,0 +1,41 @@
+a {
+	padding: 16px !important;
+}
+h2:first-letter {
+	text-transform: capitalize;
+}
+.reset {
+	border: 0px;
+	margin: 0px;
+}
+
+.check{
+	border-left: 0px !important;
+	border-right: 0px !important;
+}
+.bottone, .popup-buttons .button-positive{
+	background-color: #009966 !important;
+}
+
+.divBottone {
+	padding: 16px;
+}
+
+.carta {
+	text-align: center;
+	margin: 0px;
+}
+
+.titoloCarta {
+    font-size: 1.5em;
+    width: 100%;
+    /*font-weight: bold;
+    color: #fff; */
+}
+.titoloCarta:first-letter {
+    text-transform: capitalize;
+}
+
+.logo {
+	padding: 10px 16px 16px 15px;
+}

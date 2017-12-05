@@ -1,0 +1,101 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "lorenzo",
+      "password": "lorenzo123",
+      "firstName": "lorenzo",
+      "lastName": "cristofori"
+    },
+    {
+      "id": 2,
+      "username": "prova",
+      "password": "prova123",
+      "firstName": "provaFirstName",
+      "lastName": "provaLastName"
+    }
+  ],
+  "authenticate": [
+    {
+      "id": 1,
+      "username": "lorenzo",
+      "firstName": "lorenzo",
+      "lastName": "cristofori",
+	  "authenticate" : true
+    }
+  ],
+  "authenticateNO": [
+    {
+      "id": 0,
+      "username": "null",
+      "firstName": "null",
+      "lastName": "null",
+	  "authenticate" : false
+    }
+  ],
+  "surveys": [
+    {
+      "survey_id": 1,
+	  "user_id": 1,
+      "title": "primo sondaggio",
+      "topic_id": 1,
+      "status": "on",
+	  "max_users" : 10
+    },
+	{
+      "survey_id": 2,
+	  "user_id": 2,
+      "title": "secondo sondaggio",
+      "topic_id": 2,
+      "status": "on",
+	  "max_users" : 100
+    },
+	{
+      "survey_id": 3,
+	  "user_id": 1,
+      "title": "terzo sondaggio",
+      "topic_id": 2,
+      "status": "on",
+	  "max_users" : 1000
+    }
+  ],
+  "survey_questions": [
+    {
+      "question_id": 1,
+	  "survey_id": 1,
+      "title": "prima domanda sondaggio 1",
+      "type": "aperta",
+      "order": "bho",
+	  "domanda" : "come ti chiami?"
+    },
+	{
+      "question_id": 2,
+	  "survey_id": 2,
+      "title": "prima domanda sondaggio 2",
+      "type": "risposta_multipla",
+      "order": "bho",
+	  "domanda" : "quanto fa caldo?",
+	  "opzioni": ["poco","tanto","scusa come dici? non risco a sentirti con le urla delle persone in fiamme!"]
+    },
+	{
+      "question_id": 3,
+	  "survey_id": 1,
+      "title": "seconda domanda sondaggio 1",
+      "type": "risposta_multipla",
+      "order": "bho",
+	  "domanda" : "quanti anni hai?",
+	  "opzioni": ["meno di 18","18","piu di 18"]
+    }
+  ],
+
+  "profile": {
+    "name": "typicode"
+  }
+}

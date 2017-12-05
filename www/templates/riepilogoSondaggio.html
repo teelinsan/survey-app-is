@@ -1,0 +1,14 @@
+
+<ion-view view-title= "Sondaggio">
+  <ion-content>
+    <form>
+        
+        <ion-item ng-repeat="domanda in domandeRiepilogo">
+            <h2>{{domanda}}</h2>
+            <ion-label class="check" ng-repeat="risposta in risposteRiepilogo">
+                <ion-item>{{risposta}}</ion-item>
+            </ion-label>
+        </ion-item>
+    </form>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,20 @@
+<ion-view view-title="Account">
+  <ion-content>
+        <ion-item>
+        <h1 class="title">Account</h1>
+        </ion-item>
+        <ion-item>
+            Account ID: {{account.id}} 
+        </ion-item>
+        <ion-item ng-click="modifica('e')">
+            Email: {{account.email}}
+        </ion-item>
+        <ion-item>
+            Data creazione: {{account.created_at | date:"mediumDate"}}
+        </ion-item>
+        <ion-item ng-click="modifica('pw')">
+            Clicca qui per cambiare password
+        </ion-item>
+        <img class="logo" src="../img/survey_app_logo.png" style="padding-top: 20px;">
+  </ion-content>
+</ion-view>
