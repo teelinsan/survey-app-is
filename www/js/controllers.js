@@ -101,15 +101,73 @@ angular.module('starter.controllers', [])
     ///INiziare da qui
 
     $rootScope.getSondaggioInfo = function(id){
-        var domandeRiepilogo = new Map() ;
-        var risposteRiepilogo = {};
 
-        $http.get('https://progettois.herokuapp.com/api/users/' + $rootScope.account.id + '/answers/' + id)
+        var prova;
+
+
+        var request = new XMLHttpRequest();
+        request.open('GET', 'https://progettois.herokuapp.com/api/surveys/' + id + '/questions.json', false);  // `false` makes the request synchronous
+        request.send(null);
+
+        if (request.status === 200) {
+          console.log(JSON.parse(request.responseText));
+          prova = JSON.parse(request.responseText);
+        }
+
+
+
+        var domandeRiepilogo = {} ;
+        var risposteRiepilogo = new Map();
+
+        var arrayJsonDom = [];
+
+
+
+        var request = new XMLHttpRequest();
+        request.open('GET', 'https://progettois.herokuapp.com/api/users/' + $rootScope.account.id + '/answers/' + id, false);  // `false` makes the request synchronous
+        request.send(null);
+
+        if (request.status === 200) {
+          console.log(JSON.parse(request.responseText));
+          datoest = JSON.parse(request.responseText);
+        }
+        angular.forEach(datoest, function(value, key){
+            var jsonDomanda = {};
+            jsonDomanda["id"] = value.survey_question_id;
+            jsonDomanda["risposte"] = value.data.riposte;
+            //jsonDomanda["domanda"] = "";
+            risposteRiepilogo.set(value.survey_question_id,jsonDomanda);
+            //arrayJsonDom.push(jsonDomanda);
+            //risposteRiepilogo[value.survey_question_id] = value.data.riposte
+            //console.log("question in " + value.survey_question_id);
+            //console.log("array risposte " + value.data.riposte);
+        })
+
+        $http.get('https://progettois.herokuapp.com/api/users/' + $rootScope.account.id + '/answers/' + id, {priority:2})
         .success(function(data){
             if(data != undefined){
               console.log(data)
+              $http.get('https://progettois.herokuapp.com/api/surveys/' + id + '/questions.json')
+                  .success(function(data1, status){
+                      console.log("ECCCO");
+                      console.log(status)
+                      console.log("loggo data1");
+                      console.log(data1)
+                      prova = data1
+
+              }).error(function(data, status, headers, config){
+                  console.log("Errore post risposte")
+                  console.log(data)
+                  console.log(status)
+              })
               angular.forEach(data, function(value, key){
-                  risposteRiepilogo[value.survey_question_id] = value.data.riposte
+                  var jsonDomanda = {};
+                  jsonDomanda["id"] = value.survey_question_id;
+                  jsonDomanda["risposte"] = value.data.riposte;
+                  //jsonDomanda["domanda"] = "";
+                  risposteRiepilogo.set(value.survey_question_id,jsonDomanda);
+                  //arrayJsonDom.push(jsonDomanda);
+                  //risposteRiepilogo[value.survey_question_id] = value.data.riposte
                   //console.log("question in " + value.survey_question_id);
                   //console.log("array risposte " + value.data.riposte);
               })
@@ -126,18 +184,68 @@ angular.module('starter.controllers', [])
             })
         })
         */
-        console.log("Stampo risposte riepilogo")
-        console.log(risposteRiepilogo)
+        //console.log("Stampo risposte riepilogo")
+        //console.log(risposteRiepilogo)
 
-        $http.get('https://progettois.herokuapp.com/api/surveys/' + id + '/questions.json')
-            .success(function(data1){
-                angular.forEach(data1, function(value, key){
-                  domandeRiepilogo.set(value.id, value.data.question);
-                   //console.log("value id " + value.id);
-                   //console.log("data question " + value.data.question);
-                })
+
+        console.log("loggo prova");
+        console.log(prova);
+        if (prova == undefined){
+          $http.get('https://progettois.herokuapp.com/api/surveys/' + id + '/questions.json',{priority:1})
+              .success(function(data1, status){
+                  console.log("ECCCO");
+                  console.log(status)
+                  console.log("loggo data1");
+                  console.log(data1)
+                  prova = data1
+
+          }).error(function(data, status, headers, config){
+              console.log("Errore post risposte")
+              console.log(data)
+              console.log(status)
+          })
+        }
+        console.log("loggo prova");
+        console.log(prova);
+        /*
+        angular.forEach(prova, function(value, key){
+          console.log("jsdbjshdbvhjsdbv");
+          console.log(arrayJsonDom);
+          for(var d in arrayJsonDom){
+            console.log("rootscopeid " + arrayJsonDom[d].id);
+            console.log("valueid "+ value.id);
+            if(arrayJsonDom[d].id == value.id){
+              arrayJsonDom[d]["domanda"] = value.data.question;
+            }
+          }
+
+
+
+
+          //domandeRiepilogo.set(value.id, value.data.question);
+           //console.log("value id " + value.id);
+           //console.log("data question " + value.data.question);
         })
-        $rootScope.hashArrayDomandeRisposte = {"First Name": ["John", "chhh"], "Last Name":"Smith", "First Name33":"John", "Last Name44":"Smith"}
+        */
+        console.log("Stampo risposte riepilogo1");
+        console.log(risposteRiepilogo);
+        angular.forEach(prova, function(value, key){
+              console.log("id " + value.id);
+              console.log(risposteRiepilogo.get(value.id));
+              if(risposteRiepilogo.get(value.id) != undefined){
+                var jsonhj = risposteRiepilogo.get(value.id);
+                jsonhj.domanda = value.data.question;
+                arrayJsonDom.push(jsonhj);
+              }
+        })
+        console.log("Stampo risposte riepilogo");
+        console.log(risposteRiepilogo);
+        $rootScope.arrayJsonDomandeRisposte = arrayJsonDom;
+        //$rootScope.hashArrayDomandeRisposte = {"First Name": ["John", "chhh"], "Last Name":"Smith", "First Name33":"John", "Last Name44":"Smith"}
+        console.log("qui");
+        console.log(arrayJsonDom);
+
+        /*
         for(var i in domandeRiepilogo){
           console.log(i)
           if(risposteRiepilogo[i] != undefined){
@@ -161,6 +269,7 @@ angular.module('starter.controllers', [])
 
         console.log("Stampo hashmapProva")
         console.log($rootScope.hashArrayDomandeRisposte);
+        */
 
     }
 })
