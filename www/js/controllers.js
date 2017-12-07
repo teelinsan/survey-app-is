@@ -140,11 +140,10 @@ angular.module('starter.controllers', [])
         $rootScope.hashArrayDomandeRisposte = {"First Name": ["John", "chhh"], "Last Name":"Smith", "First Name33":"John", "Last Name44":"Smith"}
         for(var i in domandeRiepilogo){
           console.log(i)
-          if(risposteRiepilogo[i] != undefined){
-            $rootScope.hashArrayDomandeRisposte[domandeRiepilogo[i]] = risposteRiepilogo[i];
-          } else {
-            $rootScope.hashArrayDomandeRisposte[domandeRiepilogo[i]] = "";
-          }
+          if(risposteRiepilogo[i] == undefined){
+              $rootScope.hashArrayDomandeRisposte[domandeRiepilogo[i]] = "";
+          } 
+          $rootScope.hashArrayDomandeRisposte[domandeRiepilogo[i]] = risposteRiepilogo[i];
         }
         for(var i in domandeRiepilogo){
           console.log("hajshajshdjahsd");
@@ -232,6 +231,10 @@ angular.module('starter.controllers', [])
           $state.go('app.sondaggi');
         });
 
+    }
+    
+    $rootScope.backToRiepilogo = function(){
+        $state.go('app.riepilogo');
     }
 
 })
