@@ -39,7 +39,7 @@ angular.module('starter.controllers', [])
             for(let id in surveyIDS){
                 $http.get('https://progettois.herokuapp.com/api/users/' + $rootScope.account.id + '/answers/' + surveyIDS[id])
                     .success(function(data){
-                    console.log(data)
+                    //console.log(data)
                     if(data.length == 0){
                         angular.forEach($rootScope.sondaggi, function(value,key){
                             if(value.id == surveyIDS[id])
@@ -69,7 +69,7 @@ angular.module('starter.controllers', [])
     $rootScope.getSondaggioID = function(id){
 
         $http.get('https://progettois.herokuapp.com/api/surveys/' + id + '.json')
-            .success(function(data){ì
+            .success(function(data){
                 $rootScope.sondaggio = data
             })
             .error(function(data){
@@ -79,6 +79,7 @@ angular.module('starter.controllers', [])
         $http.get('https://progettois.herokuapp.com/api/surveys/' + id + '/questions.json')
         .success(function(data){
             $rootScope.domande= data;
+            console.log(data)
 
             $rootScope.multiple = [];
             $rootScope.aperte = [];
@@ -273,7 +274,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('SondaggioCtrl', function($rootScope, $http, $state, $ionicPopup, $timeout) {
+.controller('SondaggioCtrl', function($rootScope, $http, $state, $ionicPopup, $filter) {
 
     $rootScope.datiRisposte = [];
 
@@ -295,7 +296,7 @@ angular.module('starter.controllers', [])
                 if($rootScope.datiRisposte[key]) {
                     ++count;
                 }
-            console.log(count)
+            //console.log(count)
             });
 
             if(count >= domanda.data.type.max_answer) {
@@ -337,7 +338,14 @@ angular.module('starter.controllers', [])
           template: 'Grazie per aver completato il nostro sondaggio'
         });
         alertPopup.then(function(res) {
-          $state.go('app.sondaggi');
+            //removes survey from sondaggiShow and push it into sondaggiRisposti
+            angular.forEach($rootScope.sondaggiShow, function(value, key){
+                if(value.id == $rootScope.sondaggio.id){
+                    $rootScope.sondaggiRisposti.push($rootScope.sondaggio)
+                    $rootScope.sondaggiShow = $filter('filter')($rootScope.sondaggiShow, function(value, index) {return value.id !== $rootScope.sondaggio.id;});
+                }
+            })
+            $state.go('app.sondaggi');
         });
 
     }
@@ -451,6 +459,16 @@ angular.module('starter.controllers', [])
                     });
                     alertPopup.then(function(res) {
                       $scope.backToLogin();
+                    });
+                }else if(!(angular.isString(data[1]))){
+                    var alertPopup = $ionicPopup.alert({
+                      title: 'Errore',
+                      template: 'Email già utilizzata!'
+                    });
+                }else{
+                      var alertPopup = $ionicPopup.alert({
+                      title: 'Errore',
+                      template: 'Password troppo corta'
                     });
                 }
            })
