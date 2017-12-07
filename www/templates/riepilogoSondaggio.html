@@ -6,9 +6,12 @@
   <ion-content>
     <form>
 
-        <ion-item ng-repeat='(key, value) in hashArrayDomandeRisposte'>
-              <span>Key: {{key}}, value: {{value}}</span>
-                
+        <ion-item ng-repeat='data in arrayJsonDomandeRisposte'>
+              <h2>{{data.domanda}}</h2>
+              <ion-item ng-repeat='risposta in data.risposte'>
+                    <span>{{risposta}}</span>
+              </ion-item>
+
 
             <!---
             <h2>{{domanda}}</h2>
