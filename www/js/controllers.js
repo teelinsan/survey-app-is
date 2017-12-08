@@ -118,10 +118,9 @@ angular.module('starter.controllers', [])
 
 
         var domandeRiepilogo = {} ;
-        var risposteRiepilogo = new Map();
-
+        var risposteRiepilogo = new Map()
         var arrayJsonDom = [];
-
+        var arrayDomandeAperte = [];
 
 
         var request = new XMLHttpRequest();
@@ -132,6 +131,7 @@ angular.module('starter.controllers', [])
           console.log(JSON.parse(request.responseText));
           datoest = JSON.parse(request.responseText);
         }
+
         angular.forEach(datoest, function(value, key){
             var jsonDomanda = {};
             jsonDomanda["id"] = value.survey_question_id;
@@ -143,7 +143,7 @@ angular.module('starter.controllers', [])
             //console.log("question in " + value.survey_question_id);
             //console.log("array risposte " + value.data.riposte);
         })
-
+        /*
         $http.get('https://progettois.herokuapp.com/api/users/' + $rootScope.account.id + '/answers/' + id, {priority:2})
         .success(function(data){
             if(data != undefined){
@@ -177,7 +177,7 @@ angular.module('starter.controllers', [])
             }
         })
 
-        /*
+
         $http.get('https://progettois.herokuapp.com/api/surveys/' + data.survey_question_id + '/questions.json')
         .success(function(data1){
             angular.forEach(data1, function(value, key){
@@ -236,22 +236,28 @@ angular.module('starter.controllers', [])
               if(risposteRiepilogo.get(value.id) != undefined){
                 var jsonhj = risposteRiepilogo.get(value.id);
                 jsonhj.domanda = value.data.question;
-                arrayJsonDom.push(jsonhj);
+                jsonhj.tipo = value.data.type.tipo;
+                if(jsonhj.tipo == "opzioni"){
+                  arrayJsonDom.push(jsonhj);
+                } else {
+                  arrayDomandeAperte.push(jsonhj);
+                }
+
               }
         })
-        console.log("Stampo risposte riepilogo");
-        console.log(risposteRiepilogo);
+        $rootScope.arrayDomandeAperteRoot = arrayDomandeAperte;
         $rootScope.arrayJsonDomandeRisposte = arrayJsonDom;
         //$rootScope.hashArrayDomandeRisposte = {"First Name": ["John", "chhh"], "Last Name":"Smith", "First Name33":"John", "Last Name44":"Smith"}
         console.log("qui");
         console.log(arrayJsonDom);
-
+        console.log("Stampo array domande aperte");
+        console.log($rootScope.arrayDomandeAperteRoot);
         /*
         for(var i in domandeRiepilogo){
           console.log(i)
           if(risposteRiepilogo[i] == undefined){
               $rootScope.hashArrayDomandeRisposte[domandeRiepilogo[i]] = "";
-          } 
+          }
           $rootScope.hashArrayDomandeRisposte[domandeRiepilogo[i]] = risposteRiepilogo[i];
         }
         for(var i in domandeRiepilogo){
@@ -272,6 +278,7 @@ angular.module('starter.controllers', [])
         */
 
     }
+
 })
 
 .controller('SondaggioCtrl', function($rootScope, $http, $state, $ionicPopup, $filter) {
