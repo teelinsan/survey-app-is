@@ -285,25 +285,6 @@ angular.module('starter.controllers', [])
 
     $rootScope.datiRisposte = [];
 
-     $rootScope.addRisposta = function(risposta, domanda){
-
-        if($rootScope.datiRisposte[domanda.id] == undefined){
-            $rootScope.datiRisposte[domanda.id] = []
-        }
-        $rootScope.datiRisposte[domanda.id].push(risposta)
-    }
-
-     //blocca tutte le check!!!
-   /* $rootScope.checkChanged = function(item, domanda){
-        console.log(item)
-        $rootScope.limit = domanda.data.type.max_answer;
-        console.log($rootScope.limit)
-        if(item.winner) $rootScope.checked++;
-        else $rootScope.checked--;
-    }*/
-
-
-
     $rootScope.clickSubmit = function(){
 
         var arrayprova = []
@@ -347,6 +328,33 @@ angular.module('starter.controllers', [])
     
     $rootScope.backToRiepilogo = function(){
         $state.go('app.riepilogo');
+    }
+    
+    
+    $rootScope.checked = 0
+    $rootScope.limit = 1
+    $rootScope.checkChanged = function(item, domanda, risposta){
+        
+        $rootScope.limit = domanda.data.type.max_answer;
+        
+        if(item.winner){
+            $rootScope.checked++;
+            if($rootScope.datiRisposte[domanda.id] == undefined){
+                $rootScope.datiRisposte[domanda.id] = []
+            }
+            $rootScope.datiRisposte[domanda.id].push(risposta)
+        }else{
+            $rootScope.checked--;
+            
+            if($rootScope.datiRisposte[domanda.id] !== undefined){
+                angular.forEach($rootScope.datiRisposte[domanda.id], function(value, key){
+                    
+                    if(value == risposta){
+                        $rootScope.datiRisposte[domanda.id] = $filter('filter')($rootScope.datiRisposte[domanda.id], function(value, index) {return value !== risposta;});
+                    }
+                })
+            }
+        }
     }
 
 })

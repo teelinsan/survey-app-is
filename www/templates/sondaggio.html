@@ -8,7 +8,7 @@
         <ion-item ng-repeat="domanda in multiple">
             <h2>{{domanda.data.question}}</h2>
             <ion-label class="check" ng-repeat="risposta in domanda.data.options">
-                <ion-checkbox class="check" ng-click="addRisposta(risposta,domanda)"  color="green">{{risposta}}</ion-checkbox>
+                <ion-checkbox class="check" ng-model="item.winner" ng-change="checkChanged(item,domanda, risposta)" ng-disabled="checked==limit && !item.winner" color="green">{{risposta}}</ion-checkbox>
             </ion-label>
         </ion-item>
 
