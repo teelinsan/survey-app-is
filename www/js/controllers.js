@@ -286,26 +286,14 @@ angular.module('starter.controllers', [])
         $rootScope.datiRisposte[domanda.id].push(risposta)
     }
 
-
-
-    //NON FUNZIONA
-    $rootScope.shouldDisable = function(domanda) {
-        if(!$rootScope.datiRisposte[domanda.id]) {
-            var count = 0;
-            Object.keys($rootScope.datiRisposte).forEach(function(key) {
-                if($rootScope.datiRisposte[key]) {
-                    ++count;
-                }
-            //console.log(count)
-            });
-
-            if(count >= domanda.data.type.max_answer) {
-                return true;
-            }
-        }
-
-        return false;
-    };
+     //blocca tutte le check!!!
+   /* $rootScope.checkChanged = function(item, domanda){
+        console.log(item)
+        $rootScope.limit = domanda.data.type.max_answer;
+        console.log($rootScope.limit)
+        if(item.winner) $rootScope.checked++;
+        else $rootScope.checked--;
+    }*/
 
 
 
