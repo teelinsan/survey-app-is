@@ -18,14 +18,14 @@
           <input type="password" ng-model="registerData.password_confirmation" ng-minlenght="6">
         </label>
       </div>
-              
+
         <div class="padding">
             <p ng-show="myForm.registerData.username.$error.required">* Username is required</p>
             <p ng-show="myForm.registerData.username.$error.minlength">* Username must be longer than 5 characters</p>
             <p ng-show="myForm.registerData.password.$error.required">* Password is required</p>
             <p ng-show="myForm.registerData.password.$error.minlength">* Password must be longer than 6 characters</p>
         </div>
-        
+
         <div class="padding">
             <div class="divBottone" style="padding-bottom: 0px;">
                 <button class="button bottone button-block button-positive" ng-click="register()">Registrati</button>

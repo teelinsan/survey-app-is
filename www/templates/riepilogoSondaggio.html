@@ -7,8 +7,10 @@
     <form>
       <ion-item ng-repeat="x in arrayDomandeAperteRoot track by $index">
           <ion-label>
+              <div>
               <h2>{{x.domanda}}</h2>
               <span>{{x.risposte}}</span>
+            </div>
           </ion-label>
       </ion-item>
         <ion-item ng-repeat='data in arrayJsonDomandeRisposte'>

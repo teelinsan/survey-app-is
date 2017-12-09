@@ -325,18 +325,18 @@ angular.module('starter.controllers', [])
         });
 
     }
-    
+
     $rootScope.backToRiepilogo = function(){
         $state.go('app.riepilogo');
     }
-    
-    
+
+
     $rootScope.checked = 0
     $rootScope.limit = 1
     $rootScope.checkChanged = function(item, domanda, risposta){
-        
+        console.log(domanda.data.type.max_answer);
         $rootScope.limit = domanda.data.type.max_answer;
-        
+
         if(item.winner){
             $rootScope.checked++;
             if($rootScope.datiRisposte[domanda.id] == undefined){
@@ -345,10 +345,10 @@ angular.module('starter.controllers', [])
             $rootScope.datiRisposte[domanda.id].push(risposta)
         }else{
             $rootScope.checked--;
-            
+
             if($rootScope.datiRisposte[domanda.id] !== undefined){
                 angular.forEach($rootScope.datiRisposte[domanda.id], function(value, key){
-                    
+
                     if(value == risposta){
                         $rootScope.datiRisposte[domanda.id] = $filter('filter')($rootScope.datiRisposte[domanda.id], function(value, index) {return value !== risposta;});
                     }
@@ -507,7 +507,7 @@ angular.module('starter.controllers', [])
           if(!(angular.isString(data))){
                 $rootScope.account = data;
                 $rootScope.account.created_at = Date.parse(data.created_at);
-                $state.go('app.riepilogo');
+                $state.go('app.sondaggi');
                 console.log("LOGIN email: " + $scope.loginData.email + " - PW: " + $scope.loginData.password);
           }else{
               var alertPopup8 = $ionicPopup.alert({

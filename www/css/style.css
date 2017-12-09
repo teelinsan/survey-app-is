@@ -9,6 +9,10 @@ h2:first-letter {
 	margin: 0px;
 }
 
+.pad {
+	padding-left: 20px;
+}
+
 .check{
 	border-left: 0px !important;
 	border-right: 0px !important;
