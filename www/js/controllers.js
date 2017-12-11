@@ -330,21 +330,23 @@ angular.module('starter.controllers', [])
         $state.go('app.riepilogo');
     }
 
-
-    $rootScope.checked = 0
-    $rootScope.limit = 1
+    
+    $rootScope.checked = [];
     $rootScope.checkChanged = function(item, domanda, risposta){
-        console.log(domanda.data.type.max_answer);
-        $rootScope.limit = domanda.data.type.max_answer;
-
+        console.log($rootScope.checked)
+        
+        if($rootScope.checked[domanda.id] == undefined){
+            $rootScope.checked[domanda.id] = 0;
+            //$rootScope.checked = $filter('filter')($rootScope.checked, function(value, index) {return value;});
+        }
         if(item.winner){
-            $rootScope.checked++;
+            $rootScope.checked[domanda.id]++;
             if($rootScope.datiRisposte[domanda.id] == undefined){
                 $rootScope.datiRisposte[domanda.id] = []
             }
             $rootScope.datiRisposte[domanda.id].push(risposta)
         }else{
-            $rootScope.checked--;
+            $rootScope.checked[domanda.id]--;
 
             if($rootScope.datiRisposte[domanda.id] !== undefined){
                 angular.forEach($rootScope.datiRisposte[domanda.id], function(value, key){
@@ -355,6 +357,7 @@ angular.module('starter.controllers', [])
                 })
             }
         }
+        console.log($rootScope.checked)
     }
 
 })
