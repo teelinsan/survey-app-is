@@ -485,9 +485,8 @@ angular.module('starter.controllers', [])
     $scope.register = function(){
         $scope.registerData.role= 'user';
         console.log($scope.registerData)
-        if($scope.registerData.email && $scope.registerData.password){
+        if($scope.registerData.email && $scope.registerData.password && $scope.registerData.password_confirmation && ($scope.registerData.password == $scope.registerData.password_confirmation)){
 
-            //TODO gestire errore 500 (tenere e passarci sopra)
             $http.post('https://progettois.herokuapp.com/api/new_user.json', $scope.registerData)
              .success(function(data) {
                 console.log(data);
@@ -499,25 +498,25 @@ angular.module('starter.controllers', [])
                     alertPopup.then(function(res) {
                       $scope.backToLogin();
                     });
-                }else if(!(angular.isString(data[1]))){
-                    var alertPopup = $ionicPopup.alert({
-                      title: 'Errore',
-                      template: 'Email già utilizzata!'
-                    });
                 }else{
                       var alertPopup = $ionicPopup.alert({
                       title: 'Errore',
-                      template: 'Password troppo corta'
+                      template: data[0]
                     });
                 }
            })
            .error(function(data){
                alert("Errore post");
            });
-        }else{
-              var alertPopup8 = $ionicPopup.alert({
+        }else if(!($scope.registerData.email && $scope.registerData.password && $scope.registerData.password_confirmation)) {
+              var alertPopup = $ionicPopup.alert({
                 title: 'Errore',
                 template: 'Uno o più campi vuoti'
+              });
+        }else{
+            var alertPopup = $ionicPopup.alert({
+                title: 'Errore',
+                template: 'La password non corrisponde'
               });
         }
     };
