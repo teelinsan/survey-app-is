@@ -83,9 +83,12 @@ angular.module('starter.controllers', [])
 
             $rootScope.multiple = [];
             $rootScope.aperte = [];
+            $rootScope.radio = [];
             angular.forEach($rootScope.domande, function(value, key){
                 if(value.data.type.tipo == "aperta"){
                     $rootScope.aperte.push(value);
+                }else if(value.data.type.max_answer == 1){
+                    $rootScope.radio.push(value);
                 }else{
                     $rootScope.multiple.push(value);
                 }
@@ -119,6 +122,7 @@ angular.module('starter.controllers', [])
 
         var domandeRiepilogo = {} ;
         var risposteRiepilogo = new Map()
+        var arrayJsonRadio = [];
         var arrayJsonDom = [];
         var arrayDomandeAperte = [];
 
@@ -235,11 +239,14 @@ angular.module('starter.controllers', [])
               console.log(risposteRiepilogo.get(value.id));
               if(risposteRiepilogo.get(value.id) != undefined){
                 var jsonhj = risposteRiepilogo.get(value.id);
-                jsonhj.domanda = value.data.question;
+                jsonhj.domanda = value.data.domanda;
+                jsonhj.max_answer = value.data.type.max_answer;
                 jsonhj.tipo = value.data.type.tipo;
                 if(jsonhj.tipo == "opzioni"){
                   arrayJsonDom.push(jsonhj);
-                } else {
+                } /*else if(jsonhj.max_answer == 1){
+                  arrayJsonRadio.push(jsonhj);
+                }*/ else {
                   arrayDomandeAperte.push(jsonhj);
                 }
 
@@ -247,6 +254,7 @@ angular.module('starter.controllers', [])
         })
         $rootScope.arrayDomandeAperteRoot = arrayDomandeAperte;
         $rootScope.arrayJsonDomandeRisposte = arrayJsonDom;
+        //$rootScope.arrayJsonRadio = arrayJsonRadio;
         //$rootScope.hashArrayDomandeRisposte = {"First Name": ["John", "chhh"], "Last Name":"Smith", "First Name33":"John", "Last Name44":"Smith"}
         console.log("qui");
         console.log(arrayJsonDom);
@@ -329,9 +337,26 @@ angular.module('starter.controllers', [])
     $rootScope.backToRiepilogo = function(){
         $state.go('app.riepilogo');
     }
-
     
-    $rootScope.checked = [];
+    $rootScope.addRisposta = function(domanda,risposta, item){
+        if(item.winner){
+            if($rootScope.datiRisposte[domanda.id] == undefined){
+                    $rootScope.datiRisposte[domanda.id] = [];
+                }
+            $rootScope.datiRisposte[domanda.id].push(risposta);
+        }else{
+            if($rootScope.datiRisposte[domanda.id] !== undefined){
+                
+                angular.forEach($rootScope.datiRisposte[domanda.id], function(value, key){
+                    if(value == risposta){
+                        $rootScope.datiRisposte[domanda.id] = $filter('filter')($rootScope.datiRisposte[domanda.id], function(value, index) {return value !== risposta;});
+                    }
+                })
+            }
+        }
+    }
+    
+    /*$rootScope.checked = [];
     $rootScope.checkChanged = function(item, domanda, risposta){
         console.log($rootScope.checked)
         
@@ -358,7 +383,7 @@ angular.module('starter.controllers', [])
             }
         }
         console.log($rootScope.checked)
-    }
+    }*/
 
 })
 
