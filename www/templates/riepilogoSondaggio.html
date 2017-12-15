@@ -5,20 +5,19 @@
   </ion-nav-buttons>
   <ion-content>
     <form>
-      <ion-item ng-repeat="x in arrayDomandeAperteRoot track by $index">
-          <ion-label>
-              <div>
+      <ion-item class="box" ng-repeat="x in arrayDomandeAperteRoot track by $index">
+          <ion-item>
               <h2>{{x.domanda}}</h2>
               <span>{{x.risposte}}</span>
-            </div>
-          </ion-label>
+          </ion-item>
       </ion-item>
         <ion-item ng-repeat='data in arrayJsonDomandeRisposte'>
-              <h2>{{data.domanda}}</h2>
-              <ion-item ng-repeat='risposta in data.risposte track by $index'>
+              <ion-item class="risposta" ng-repeat='risposta in data.risposte track by $index'>
+                    <h2>{{data.domanda}}</h2>
                     <span>{{risposta}}</span>
               </ion-item>
         </ion-item>
+
     </form>
   </ion-content>
 </ion-view>

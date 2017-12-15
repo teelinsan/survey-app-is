@@ -1,9 +1,19 @@
+h2, ion-label, .item {
+	white-space: normal !important;
+}
+
 a {
 	padding: 16px !important;
 }
 h2:first-letter {
 	text-transform: capitalize;
 }
+
+.risposta {
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+}
+
 .reset {
 	border: 0px;
 	margin: 0px;
@@ -11,6 +21,11 @@ h2:first-letter {
 
 .pad {
 	padding-left: 20px;
+}
+
+.box {
+	word-wrap: break-word;
+	border-color: #009966 !important;
 }
 
 .check{
@@ -21,6 +36,14 @@ h2:first-letter {
 	background-color: #009966 !important;
 }
 
+/*
+.checkbox-royal input:before,
+.checkbox-royal .checkbox-icon::before {
+	border-color:  #009966 !important;
+	background:  #009966 !important;
+}
+
+*/
 .divBottone {
 	padding: 16px;
 }
@@ -41,5 +64,12 @@ h2:first-letter {
 }
 
 .logo {
-	padding: 10px 16px 16px 15px;
+	padding-top: 15px;
+	padding-left: 8px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.confermapwd {
+	padding-left: 40px !important;
 }
