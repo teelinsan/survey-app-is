@@ -302,6 +302,7 @@ angular.module('starter.controllers', [])
             dato.data = {"riposte": $rootScope.datiRisposte[i]}
             arrayprova.push(dato);
         }
+        
 
         for(let d in arrayprova){
             $http.post('http://progettois.herokuapp.com/api/survey_answers.json', arrayprova[d])
@@ -312,6 +313,7 @@ angular.module('starter.controllers', [])
             })
             .error(function(data, status, headers, config){
                 console.log("Errore post risposte")
+                console.log(arrayprova[d])
                 console.log(data)
                 console.log(status)
             })
@@ -338,22 +340,28 @@ angular.module('starter.controllers', [])
         $state.go('app.riepilogo');
     }
     
-    $rootScope.addRisposta = function(domanda,risposta, item){
-        if(item.winner){
-            if($rootScope.datiRisposte[domanda.id] == undefined){
-                    $rootScope.datiRisposte[domanda.id] = [];
-                }
-            $rootScope.datiRisposte[domanda.id].push(risposta);
-        }else{
-            if($rootScope.datiRisposte[domanda.id] !== undefined){
-                
-                angular.forEach($rootScope.datiRisposte[domanda.id], function(value, key){
-                    if(value == risposta){
-                        $rootScope.datiRisposte[domanda.id] = $filter('filter')($rootScope.datiRisposte[domanda.id], function(value, index) {return value !== risposta;});
+    $rootScope.addRisposta = function(domanda, risposta, item, radio){
+        if(!radio){
+            if(item.winner){
+                if($rootScope.datiRisposte[domanda.id] == undefined){
+                        $rootScope.datiRisposte[domanda.id] = [];
                     }
-                })
+                $rootScope.datiRisposte[domanda.id].push(risposta);
+            }else{
+                if($rootScope.datiRisposte[domanda.id] !== undefined){
+                    
+                    angular.forEach($rootScope.datiRisposte[domanda.id], function(value, key){
+                        if(value == risposta){
+                            $rootScope.datiRisposte[domanda.id] = $filter('filter')($rootScope.datiRisposte[domanda.id], function(value, index) {return value !== risposta;});
+                        }
+                    })
+                }
             }
+        }else{
+            $rootScope.datiRisposte[domanda.id] = [];
+            $rootScope.datiRisposte[domanda.id].push(risposta);
         }
+        console.log($rootScope.datiRisposte)
     }
     
     /*$rootScope.checked = [];
