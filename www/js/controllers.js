@@ -68,6 +68,8 @@ angular.module('starter.controllers', [])
 
     $rootScope.getSondaggioID = function(id){
 
+        $rootScope.datiRisposte = [];
+
         $http.get('https://progettois.herokuapp.com/api/surveys/' + id + '.json')
             .success(function(data){
                 $rootScope.sondaggio = data
@@ -140,57 +142,9 @@ angular.module('starter.controllers', [])
             var jsonDomanda = {};
             jsonDomanda["id"] = value.survey_question_id;
             jsonDomanda["risposte"] = value.data.riposte;
-            //jsonDomanda["domanda"] = "";
             risposteRiepilogo.set(value.survey_question_id,jsonDomanda);
-            //arrayJsonDom.push(jsonDomanda);
-            //risposteRiepilogo[value.survey_question_id] = value.data.riposte
-            //console.log("question in " + value.survey_question_id);
-            //console.log("array risposte " + value.data.riposte);
-        })
-        /*
-        $http.get('https://progettois.herokuapp.com/api/users/' + $rootScope.account.id + '/answers/' + id, {priority:2})
-        .success(function(data){
-            if(data != undefined){
-              console.log(data)
-              $http.get('https://progettois.herokuapp.com/api/surveys/' + id + '/questions.json')
-                  .success(function(data1, status){
-                      console.log("ECCCO");
-                      console.log(status)
-                      console.log("loggo data1");
-                      console.log(data1)
-                      prova = data1
-
-              }).error(function(data, status, headers, config){
-                  console.log("Errore post risposte")
-                  console.log(data)
-                  console.log(status)
-              })
-              angular.forEach(data, function(value, key){
-                  var jsonDomanda = {};
-                  jsonDomanda["id"] = value.survey_question_id;
-                  jsonDomanda["risposte"] = value.data.riposte;
-                  //jsonDomanda["domanda"] = "";
-                  risposteRiepilogo.set(value.survey_question_id,jsonDomanda);
-                  //arrayJsonDom.push(jsonDomanda);
-                  //risposteRiepilogo[value.survey_question_id] = value.data.riposte
-                  //console.log("question in " + value.survey_question_id);
-                  //console.log("array risposte " + value.data.riposte);
-              })
-              //risposteRiepilogo[data.survey_question_id] = data.data.riposte
-
-            }
         })
 
-
-        $http.get('https://progettois.herokuapp.com/api/surveys/' + data.survey_question_id + '/questions.json')
-        .success(function(data1){
-            angular.forEach(data1, function(value, key){
-                domandeRiepilogo[value.id]= value.data.question;
-            })
-        })
-        */
-        //console.log("Stampo risposte riepilogo")
-        //console.log(risposteRiepilogo)
 
 
         console.log("loggo prova");
@@ -212,26 +166,7 @@ angular.module('starter.controllers', [])
         }
         console.log("loggo prova");
         console.log(prova);
-        /*
-        angular.forEach(prova, function(value, key){
-          console.log("jsdbjshdbvhjsdbv");
-          console.log(arrayJsonDom);
-          for(var d in arrayJsonDom){
-            console.log("rootscopeid " + arrayJsonDom[d].id);
-            console.log("valueid "+ value.id);
-            if(arrayJsonDom[d].id == value.id){
-              arrayJsonDom[d]["domanda"] = value.data.question;
-            }
-          }
 
-
-
-
-          //domandeRiepilogo.set(value.id, value.data.question);
-           //console.log("value id " + value.id);
-           //console.log("data question " + value.data.question);
-        })
-        */
         console.log("Stampo risposte riepilogo1");
         console.log(risposteRiepilogo);
         angular.forEach(prova, function(value, key){
@@ -254,36 +189,12 @@ angular.module('starter.controllers', [])
         })
         $rootScope.arrayDomandeAperteRoot = arrayDomandeAperte;
         $rootScope.arrayJsonDomandeRisposte = arrayJsonDom;
-        //$rootScope.arrayJsonRadio = arrayJsonRadio;
-        //$rootScope.hashArrayDomandeRisposte = {"First Name": ["John", "chhh"], "Last Name":"Smith", "First Name33":"John", "Last Name44":"Smith"}
+
         console.log("qui");
         console.log(arrayJsonDom);
         console.log("Stampo array domande aperte");
         console.log($rootScope.arrayDomandeAperteRoot);
-        /*
-        for(var i in domandeRiepilogo){
-          console.log(i)
-          if(risposteRiepilogo[i] == undefined){
-              $rootScope.hashArrayDomandeRisposte[domandeRiepilogo[i]] = "";
-          }
-          $rootScope.hashArrayDomandeRisposte[domandeRiepilogo[i]] = risposteRiepilogo[i];
-        }
-        for(var i in domandeRiepilogo){
-          console.log("hajshajshdjahsd");
-          console.log(i);
-        }
 
-        angular.forEach(domandeRiepilogo, function(value, key){
-          console.log("provissima");
-          console.log(value + " " + key);
-        })
-
-        console.log("Stampo domande riepilogo")
-        console.log(domandeRiepilogo)
-
-        console.log("Stampo hashmapProva")
-        console.log($rootScope.hashArrayDomandeRisposte);
-        */
 
     }
 
@@ -302,7 +213,7 @@ angular.module('starter.controllers', [])
             dato.data = {"riposte": $rootScope.datiRisposte[i]}
             arrayprova.push(dato);
         }
-        
+
 
         for(let d in arrayprova){
             $http.post('http://progettois.herokuapp.com/api/survey_answers.json', arrayprova[d])
@@ -339,7 +250,7 @@ angular.module('starter.controllers', [])
     $rootScope.backToRiepilogo = function(){
         $state.go('app.riepilogo');
     }
-    
+
     $rootScope.addRisposta = function(domanda, risposta, item, radio){
         if(!radio){
             if(item.winner){
@@ -349,7 +260,7 @@ angular.module('starter.controllers', [])
                 $rootScope.datiRisposte[domanda.id].push(risposta);
             }else{
                 if($rootScope.datiRisposte[domanda.id] !== undefined){
-                    
+
                     angular.forEach($rootScope.datiRisposte[domanda.id], function(value, key){
                         if(value == risposta){
                             $rootScope.datiRisposte[domanda.id] = $filter('filter')($rootScope.datiRisposte[domanda.id], function(value, index) {return value !== risposta;});
@@ -363,11 +274,11 @@ angular.module('starter.controllers', [])
         }
         console.log($rootScope.datiRisposte)
     }
-    
+
     /*$rootScope.checked = [];
     $rootScope.checkChanged = function(item, domanda, risposta){
         console.log($rootScope.checked)
-        
+
         if($rootScope.checked[domanda.id] == undefined){
             $rootScope.checked[domanda.id] = 0;
             //$rootScope.checked = $filter('filter')($rootScope.checked, function(value, index) {return value;});

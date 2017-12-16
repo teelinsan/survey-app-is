@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "cordova-android": "6.3.0",
-    "cordova-ios": "4.5.4",
+    "cordova-ios": "^4.5.4",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-splashscreen": "^4.0.3",
@@ -29,7 +29,6 @@
       "cordova-plugin-ionic-webview": {}
     },
     "platforms": [
-      "ios",
       "android"
     ]
   }
