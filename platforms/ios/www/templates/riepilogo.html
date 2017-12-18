@@ -1,0 +1,16 @@
+<ion-view view-title="Riepilogo">
+  <ion-content>
+    <ion-item>
+    <h2>Sondaggi Completati </h2>
+  </ion-item>
+    <ion-item>
+        <ion-item class="reset" ng-repeat="sondaggio in sondaggiRisposti" href="#/app/riepilogoSondaggio/{{sondaggio.id}}" ng-click="getSondaggioInfo({{sondaggio.id}})">
+        <div class="card carta">
+      <div class="item item-text-wrap titoloCarta">
+        {{sondaggio.title}}
+      </div>
+    </div>
+      </ion-item>
+    </ion-item>
+  </ion-content>
+</ion-view>
