@@ -12,8 +12,8 @@
           </ion-item>
       </ion-item>
         <ion-item ng-repeat='data in arrayJsonDomandeRisposte'>
+            <h2>{{data.domanda}}</h2>
               <ion-item class="risposta" ng-repeat='risposta in data.risposte track by $index'>
-                    <h2>{{data.domanda}}</h2>
                     <span>{{risposta}}</span>
               </ion-item>
         </ion-item>
