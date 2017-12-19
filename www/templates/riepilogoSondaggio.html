@@ -6,8 +6,8 @@
   <ion-content>
     <form>
       <ion-item class="box" ng-repeat="x in arrayDomandeAperteRoot track by $index">
-          <ion-item>
-              <h2>{{x.domanda}}</h2>
+          <h2>{{x.domanda}}</h2>
+          <ion-item class="risposta">
               <span>{{x.risposte}}</span>
           </ion-item>
       </ion-item>

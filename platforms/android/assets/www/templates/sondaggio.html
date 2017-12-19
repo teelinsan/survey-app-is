@@ -14,10 +14,10 @@
               <h2>{{domanda.data.domanda}}</h2>
             </ion-item>
             <ion-item>
-                <ion-label class="check" ng-repeat="risposta in domanda.data.opzioni">
+                <ion-item class="box2 check" ng-repeat="risposta in domanda.data.opzioni">
                     <ion-checkbox class="check" ng-model="item.winner" ng-change="addRisposta(domanda,risposta,item, {{false}})" color="green">{{risposta}}</ion-checkbox>
-            </ion-label>
-        </ion-item>
+                </ion-item>
+            </ion-item>
         </ion-item>
 
         <ion-item ng-repeat="domanda in radio">
@@ -25,9 +25,9 @@
                 <h2>{{domanda.data.domanda}}</h2>
             </ion-item>
             <ion-item>
-                <ion-label class="check radio" name="{{domanda.id}}" ng-repeat="risposta in domanda.data.opzioni">
+                <ion-item class="box2 check radio" name="{{domanda.id}}" ng-repeat="risposta in domanda.data.opzioni">
                     <ion-radio class="check radio" name="{{domanda.id}}" value="Uncheck" ng-model="item.winner" ng-change="addRisposta(domanda,risposta,item, {{true}})" color="green">{{risposta}}</ion-radio>
-                </ion-label>
+                </ion-item>
             </ion-item>
         </ion-item>
 

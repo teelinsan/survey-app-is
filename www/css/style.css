@@ -1,4 +1,4 @@
-h2, ion-label, .item {
+h2, ion-label, .item , .item-content{
 	white-space: normal !important;
 }
 
@@ -25,12 +25,16 @@ h2:first-letter {
 
 .box {
 	word-wrap: break-word;
-	border-color: #009966 !important;
 }
 
 .check{
+	width: 100%;
 	border-left: 0px !important;
 	border-right: 0px !important;
+	padding-right: 0px;
+}
+.box2 {
+	padding: 0px;
 }
 .bottone, .popup-buttons .button-positive{
 	background-color: #009966 !important;
